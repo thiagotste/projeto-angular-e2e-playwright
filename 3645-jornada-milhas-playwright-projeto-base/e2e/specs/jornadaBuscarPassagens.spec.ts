@@ -2,6 +2,7 @@ import { test } from '../setup/fixtures';
 
 test.describe('Buscar Passagens', () => {
   test('deve buscar passagem de somente ida', async ({ paginaPrincipal }) => {
+    await paginaPrincipal.visitar();
     await paginaPrincipal.definirSomenteIda();
 
     await paginaPrincipal.abrirModalPassageiros();

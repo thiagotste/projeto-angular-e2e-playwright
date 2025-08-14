@@ -1,14 +1,25 @@
+import { gerarPerfil } from 'e2e/operacoes/gerarPerfils';
 import { test } from '../setup/fixtures';
 
 test.describe('Página de login', () => {
-  test('deve conseguir faxer com email e senha validos', async ({ paginaLogin }) => {
-    await paginaLogin.fazerLogin('teste@teste.com', '123456');
+  test('deve conseguir faxer com email e senha validos', async ({ paginaLogin, paginaCadastro }) => {
+    const novoUsuario = gerarPerfil();
+    await paginaCadastro.visitar();
+    await paginaCadastro.cadastrarUsuario(novoUsuario);
+    await paginaCadastro.cadasdtroFeitoComSucesso();
+
+    await paginaLogin.visitar();
+    await paginaLogin.fazerLogin(novoUsuario.email, novoUsuario.senha);
     await paginaLogin.loginFeitoComSucesso();
+
+    
+
   });
 
   test('não deve conseguir fazer login com email inválido', async ({
     paginaLogin,
   }) => {
+    await paginaLogin.visitar();
     await paginaLogin.fazerLogin('teste2@teste.com', '123456');
     await paginaLogin.estaMostrandoMensagemDeErro(
       'Você não está autorizado a acessar este recurso'
@@ -18,6 +29,7 @@ test.describe('Página de login', () => {
   test('deve mostrar mensagem de quando digitar email inválido', async ({
     paginaLogin,
   }) => {
+    await paginaLogin.visitar();
     await paginaLogin.mostrarMensagemDeEmailInvalido(
       'testeteste.com',
       '123456',
@@ -28,6 +40,7 @@ test.describe('Página de login', () => {
   test('deve mostrar mensagem de erro quando um dos campos for vazio', async ({
     paginaLogin,
   }) => {
+    await paginaLogin.visitar();
     await paginaLogin.mostrarMensagemDeErroQaundoCampoVazio(
       '',
       '123456',

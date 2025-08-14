@@ -37,12 +37,12 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>CPF</mat-label>
-              <input matInput formControlName="cpf" placeholder="Digite seu CPF">
+              <input matInput formControlName="cpf" placeholder="Digite seu CPF" data-testid="form-base-input-cpf">
               <mat-error *ngIf="cadastroForm.get('cpf')?.errors">CPF é obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Cidade</mat-label>
-              <input matInput formControlName="cidade" placeholder="Digite sua cidade">
+              <input matInput formControlName="cidade" placeholder="Digite sua cidade" data-testid="form-base-input-cidade">
               <mat-error *ngIf="cadastroForm.get('cidade')?.errors">Cidade é obrigatória</mat-error>
             </mat-form-field>
           </div>
@@ -50,21 +50,22 @@
             <div class="radio-group">
               <mat-label>Gênero</mat-label>
               <mat-radio-group formControlName="genero" color="primary">
-                <mat-radio-button value="feminino">Feminino</mat-radio-button>
-                <mat-radio-button value="masculino">Masculino</mat-radio-button>
-                <mat-radio-button value="outro">Prefiro não informar</mat-radio-button>
+                <mat-radio-button value="feminino" data-testid="form-base-radio-genero-feminino">Feminino</mat-radio-button>
+                <mat-radio-button value="masculino" data-testid="form-base-radio-genero-masculino">Masculino</mat-radio-button>
+                <mat-radio-button value="outro" data-testid="form-base-radio-genero-nao-informado">Prefiro não informar</mat-radio-button>
               </mat-radio-group>
             </div>
               <mat-form-field appearance="outline">
                 <mat-label>Telefone</mat-label>
-                <input matInput formControlName="telefone" placeholder="+XX XXXX-XXXX">
+                <input matInput formControlName="telefone" placeholder="+XX XXXX-XXXX" data-testid="form-base-input-telefone">
                 <mat-error *ngIf="cadastroForm.get('telefone')?.errors">Telefone é obrigatório</mat-error>
               </mat-form-field>
             <div class="drop-container">
               <app-dropdown-uf
                 label="Estado"
                 placeholder="Estado"
-                [control]="estadoControl">
+                [control]="estadoControl"
+                data-testid="form-base-container-estado">
               </app-dropdown-uf>
               <mat-error class="custom-error" *ngIf="estadoControl?.errors && estadoControl?.touched">Estado é obrigatório</mat-error>
           </div>
@@ -80,13 +81,13 @@
           <div class="grid-item">
             <mat-form-field appearance="outline">
               <mat-label>E-mail</mat-label>
-              <input matInput formControlName="email" type="email" placeholder="Digite seu e-mail">
+              <input matInput formControlName="email" type="email" placeholder="Digite seu e-mail" data-testid="form-base-input-email">
               <mat-error *ngIf="cadastroForm.get('email')?.errors?.['required']">E-mail é obrigatório</mat-error>
               <mat-error *ngIf="cadastroForm.get('email')?.errors?.['email']">E-mail inválido</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Senha</mat-label>
-              <input matInput formControlName="senha" type="password" placeholder="Digite sua senha">
+              <input matInput formControlName="senha" type="password" placeholder="Digite sua senha" data-testid="form-base-input-senha">
               <mat-error *ngIf="cadastroForm.get('senha')?.errors?.['required']">Senha é obrigatória</mat-error>
               <mat-error *ngIf="cadastroForm.get('senha')?.errors?.['minlength']">Senha deve ter pelo menos 3 caracteres</mat-error>
             </mat-form-field>
@@ -94,20 +95,21 @@
           <div class="grid-item">
             <mat-form-field appearance="outline">
               <mat-label>Confirmar E-mail</mat-label>
-              <input matInput formControlName="confirmarEmail" placeholder="Digite seu e-mail novamente">
+              <input matInput formControlName="confirmarEmail" placeholder="Digite seu e-mail novamente" data-testid="form-base-input-confirmar-email">
               <mat-error *ngIf="cadastroForm.get('confirmarEmail')?.errors?.['required']">Confirmação de E-mail é obrigatória</mat-error>
               <mat-error *ngIf="cadastroForm.get('confirmarEmail')?.errors?.['email']">E-mail inválido</mat-error>
               <mat-error *ngIf="cadastroForm.get('confirmarEmail')?.errors?.['equalTo']">E-mails não coincidem</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Confirmar Senha</mat-label>
-              <input matInput formControlName="confirmarSenha" type="password" placeholder="Repita sua senha">
+              <input matInput formControlName="confirmarSenha" type="password" placeholder="Repita sua senha" data-testid="form-base-input-confirmar-senha">
               <mat-error *ngIf="cadastroForm.get('confirmarSenha')?.errors?.['required']">Confirmação de Senha é obrigatória</mat-error>
               <mat-error *ngIf="cadastroForm.get('confirmarSenha')?.errors?.['equalTo']">Senhas não coincidem</mat-error>
             </mat-form-field>
           </div>
         </div>
-        <mat-checkbox *ngIf="!perfilComponent" formControlName="aceitarTermos" color="primary" class="full-width">Li e aceito os termos e condições deste cadastro *</mat-checkbox>
+        <mat-checkbox *ngIf="!perfilComponent" formControlName="aceitarTermos" color="primary" class="full-width"
+        data-testid="form-base-checkbox-termos">Li e aceito os termos e condições deste cadastro *</mat-checkbox>
         <mat-error *ngIf="cadastroForm.get('aceitarTermos')?.invalid && cadastroForm.get('aceitarTermos')?.dirty">
           Você precisa aceitar os termos e condições para efetuar o cadastro
         </mat-error>
@@ -118,6 +120,7 @@
           (click)="executarAcao()"
           [class.perfil-button]="perfilComponent"
           color="primary"
+          data-testid="form-base-botao-submeter-form"
         >{{ textoBotao }}
         </button>
       </mat-card-actions>

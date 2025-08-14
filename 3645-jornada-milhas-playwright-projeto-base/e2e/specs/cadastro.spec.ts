@@ -1,12 +1,23 @@
-import { gerarPerfil } from 'e2e/operacoes/gerarPerfils';
-import {test} from '../setup/fixtures';
+import { gerarPerfil, Perfil } from 'e2e/operacoes/gerarPerfils';
+import { test } from '../setup/fixtures';
 
 test.describe('Página Cadastro', () => {
-    test('deve conseguir fazer cadastro', async ({paginaCadastro}) => {
-        const cadastroObj = gerarPerfil();
-        console.log(cadastroObj);
+  let cadastroObj: Perfil;
+  test.beforeEach( async ({paginaCadastro}) => {
+    cadastroObj = gerarPerfil();
+    await paginaCadastro.visitar();
+  });
+  
+  test('deve conseguir fazer cadastro', async ({ paginaCadastro }) => {
+    await paginaCadastro.cadastrarUsuario(cadastroObj);
+    await paginaCadastro.cadasdtroFeitoComSucesso();
+  });
 
-        await paginaCadastro.definirNome(cadastroObj.nome);
-        await paginaCadastro.definirDataNascimento('');
-    });
+  test('Não deve conseguir fazer cadastro com email duplicado', async ({paginaCadastro}) => {
+    await paginaCadastro.cadastrarUsuario(cadastroObj);
+    await paginaCadastro.cadasdtroFeitoComSucesso();
+    await paginaCadastro.visitar();
+    await paginaCadastro.cadastrarUsuario(cadastroObj);
+    await paginaCadastro.estaMostrandoMensagemDeErro('E-mail já utilizado.');
+  });
 });

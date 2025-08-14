@@ -1,49 +1,19 @@
 import { expect, Locator, Page } from '@playwright/test';
+import { Perfil } from 'e2e/operacoes/gerarPerfils';
+import FormBaseCadastroEPerfil from './FormBaseCadastroEPerfil';
 
 export default class PaginaCadastro {
   private readonly page: Page;
   private readonly botaoVisitarPaginaCadastro: Locator;
-  private readonly inputNome: Locator;
-  private readonly inputDataNascimento: Locator;
-  private readonly inputCpf: Locator;
-  private readonly inputCidade: Locator;
-  private readonly inputTelefone: Locator;
-  private readonly inputEstado: Locator;
-  private readonly inputEmail: Locator;
-  private readonly inputSenha: Locator;
-  private readonly inputConfirmarEmail: Locator;
-  private readonly inputConfirmarSenha: Locator;
-  private readonly botaoSubmeterForm: Locator;
   private readonly checkboxTermos: Locator;
+  private readonly formBase: FormBaseCadastroEPerfil;
 
   constructor(page: Page) {
+    this.formBase = new FormBaseCadastroEPerfil(page);
     this.page = page;
     this.botaoVisitarPaginaCadastro = page.getByTestId(
       'header-botao-cadastre-se'
     );
-
-    this.inputNome = page.getByTestId('form-base-input-nome');
-    this.inputDataNascimento = page.getByTestId(
-      'form-base-input-data-nascimento'
-    );
-    this.inputCpf = page.getByTestId('form-base-input-cpf');
-    this.inputCidade = page.getByTestId('form-base-input-cidade');
-    this.inputTelefone = page.getByTestId('form-base-input-telefone');
-
-    this.inputEstado = page
-      .getByTestId('form-base-container-estado')
-      .getByLabel('Estado');
-
-    this.inputEmail = page.getByTestId('form-base-input-email');
-    this.inputSenha = page.getByTestId('form-base-input-senha');
-    this.inputConfirmarEmail = page.getByTestId(
-      'form-base-input-confirmar-email'
-    );
-    this.inputConfirmarSenha = page.getByTestId(
-      'form-base-input-confirmar-senha'
-    );
-
-    this.botaoSubmeterForm = page.getByTestId('form-base-botao-submeter-form');
     this.checkboxTermos = page
       .getByTestId('form-base-checkbox-termos')
       .getByLabel('Li e aceito os termos e condições deste cadastro');
@@ -60,12 +30,17 @@ export default class PaginaCadastro {
     await expect(elementoErro).toBeVisible();
   }
 
-  async definirNome(nome: string) {
-    await this.inputNome.fill(nome);
+  async confirmarTermoCondicaoCadastro() {
+    await this.checkboxTermos.check();
   }
 
-  async definirDataNascimento(nome: string) {
-    const data = new Date().toLocaleString('eng-US', {dateStyle: 'short'});
-    await this.inputDataNascimento.fill(data);
+  async cadasdtroFeitoComSucesso() {
+    await expect(this.page).toHaveURL('/auth/login');
+  }
+
+  async cadastrarUsuario(usuario: Perfil) {
+    await this.formBase.preencherForm(usuario);
+    await this.confirmarTermoCondicaoCadastro();
+    await this.formBase.submeterForm();
   }
 }
