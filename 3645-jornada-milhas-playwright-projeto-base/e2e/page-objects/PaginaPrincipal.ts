@@ -17,6 +17,7 @@ export default class {
   private readonly containerDestino: Locator;
   private readonly botaoComprar: Locator;
   private readonly campoBoxDataIda: Locator;
+  private readonly botaoDefinirPassagemExecutiva: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -41,6 +42,8 @@ export default class {
     this.botaoIncrementarBebes = page
       .getByTestId('seletor-passageiro-bebes')
       .getByRole('button', { name: 'adição' });
+
+      this.botaoDefinirPassagemExecutiva = page.getByTestId('botao-passagem-executiva');
     this.botaoFecharModalPassageiros = page.getByTestId(
       'fechar-modal-passageiros'
     );
@@ -65,6 +68,9 @@ export default class {
     for (let i = 0; i < quantidade; i++) {
       await this.botaoIncrementarBebes.click();
     }
+  }
+  async definirPassagemExecutiva() {
+    await this.botaoDefinirPassagemExecutiva.click();
   }
   async fecharModalPassageiros() {
     await this.botaoFecharModalPassageiros.click();
